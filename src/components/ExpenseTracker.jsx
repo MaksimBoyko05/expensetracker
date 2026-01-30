@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import Form from "./AddExpenseForm";
 
 function ExpenseTracker (){
   const initialExpenses = [
@@ -39,6 +40,7 @@ function ExpenseTracker (){
             <option key={ctg}>{ctg}</option>
           ))}
         </select>
+        <Form expenses={expenses} setExpenses={setExpenses} categories={categories}/>
       </div>
     </>
   );
