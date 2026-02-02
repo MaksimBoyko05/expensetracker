@@ -1,6 +1,7 @@
 import {useState} from "react";
+import styles from '../styles/modal.module.scss'
 
-function AddExpenseForm({expenses, setExpenses, categories}) {
+function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
 
   const initialState = {
     name: "",
@@ -16,6 +17,7 @@ function AddExpenseForm({expenses, setExpenses, categories}) {
     const newExpense = {
       ...data,
       id: Date.now().toString(36),
+      date: Date(),
       category: data.category === "custom"
         ? data.customCategory
         : data.category
@@ -29,37 +31,69 @@ function AddExpenseForm({expenses, setExpenses, categories}) {
       alert("Будь ласка, заповніть всі поля!")
     }
   }
+  const handleClose = () => {
+    onClose(false)
+    setData(initialState)
+  }
 
   return (
     <>
-      <div>
+      <div className={styles.modalwrapper}>
+        <div className={styles.modalcontent}>
+          <button onClick={handleClose} className={styles.closebtn}>x</button>
         <form onSubmit={handleSubmit}>
-          <input
-            type={"text"}
-            value={data.name}
-            onChange={(e) => setData({...data, name: e.target.value})}/>
-          <input
-            type={"text"}
-            value={data.price}
-            onChange={(e) => setData({...data, price: e.target.value})}/>
-          <select
-            value={data.category}
-            onChange={(e) => setData({...data, category: e.target.value})}>
-            {categories.map(ctg => (
-              <option key={ctg}>{ctg}</option>
-            ))}
-            <option value={"custom"}>+ Створити нову</option>
-          </select>
-          {data.category === "custom" && (
-            <>
-              <input
-                type={"text"}
-                value={data.customCategory}
-                onChange={(e) => setData({...data, customCategory: e.target.value})}/>
-            </>
-          )}
-          <button type="submit">Додати витрату</button>
+          <div className={styles.pricesection}>
+            <label>Назва витрати:</label>
+            <input
+              type={"text"}
+              placeholder={"Назва"}
+              value={data.name}
+              onChange={(e) => setData({...data, name: e.target.value})}
+            />
+          </div>
+          <div className={styles.secondsection}>
+            <div className={styles.row}>
+              <div className={styles.inputGroup}>
+                <label>Cума</label>
+                <input
+                  type={"number"}
+                  placeholder={"0.00"}
+                  value={data.price}
+                  onChange={(e) => setData({...data, price: e.target.value})}
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>Категорія</label>
+                <select
+                  value={data.category}
+                  onChange={(e) => setData({...data, category: e.target.value})}>
+                  {categories.map(ctg => (
+                    <option key={ctg}>{ctg}</option>
+                  ))}
+                  <option value={"custom"}>+ Створити нову</option>
+                </select>
+              </div>
+
+            </div>
+            {data.category === "custom" && (
+              <div className={styles.customInput}>
+                <label>Введіть назву категорії</label>
+                <input
+                  type={"text"}
+                  placeholder="Наприклад: Спорт"
+                  value={data.customCategory}
+                  onChange={(e) => setData({...data, customCategory: e.target.value})}/>
+              </div>
+            )}
+
+          </div>
+          <div className={styles.btnblock}>
+            <button className={styles.cancelbtn} onClick={handleClose}>Скасувати</button>
+            <button className={styles.addbtn} type="submit">Додати витрату</button>
+          </div>
         </form>
+        </div>
       </div>
     </>
   );

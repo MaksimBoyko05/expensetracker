@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import Form from "./AddExpenseForm";
+import styles from '../styles/main.module.scss'
 
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState(() => {
@@ -10,8 +11,8 @@ function ExpenseTracker() {
       return []
     }
   })
+  const [open, setOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("All")
-
   const sortExpenses = () => {
     let newExpenses = [...expenses]
     setExpenses(newExpenses.sort((a, b) => a.price - b.price))
@@ -25,6 +26,7 @@ function ExpenseTracker() {
   const totalExpense = filteredExpenses.reduce((accumulator, currentValue) => {
     return accumulator + Number(currentValue.price)
   }, 0);
+
   useEffect(() => {
     try {
       localStorage.setItem("expenses", JSON.stringify(expenses))
@@ -32,31 +34,70 @@ function ExpenseTracker() {
       console.log("Error with get data", error)
     }
   }, [expenses]);
+
+  const stringToColor = (string) => {
+    let hash = 0;
+    for (let i = 0; i < string.length; i++) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = Math.abs(hash % 360);
+
+    return {
+      backgroundColor: `hsl(${h}, 70%, 90%)`,
+      color: `hsl(${h}, 70%, 25%)`,
+      border: `1px solid hsl(${h}, 70%, 80%)`
+    };
+  }
+
   return (
     <>
-      <div>
+      <div className={styles.maincontainer}>
         {expenses.length === 0 ? (
           <p>У вас ще немає витрат</p>
         ) : (
-          <ul>
+          <>
+            <div className={styles.sortcontainer}>
+              <button onClick={sortExpenses}>Сортувати</button>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}>
+                {categories.map(ctg => (
+                  <option key={ctg}>{ctg}</option>
+                ))}
+              </select>
+            </div>
+          <div className={styles.cardscontainer}>
             {filteredExpenses?.map(exp => (
-              <li key={exp.id}>{exp.name} - {exp.price} грн</li>
+              <>
+              <div
+                className={styles.expensecard}
+                key={exp.id}>
+                <div className={styles.topinfo}>
+                  <span className={styles.expensename}>{exp.name} </span>
+                  <span className={styles.expenseprice}>{exp.price} ₴</span>
+                </div>
+                <div className={styles.downinfo}>
+                  <span className={styles.categorybadge} style={stringToColor(exp.category)}>{exp.category}</span>
+                  <span className={styles.expensedate}>{"Сьогодні"}</span>
+                </div>
+              </div>
+              </>
             ))}
-          </ul>
+            <div className={styles.addexpense} onClick={()=> setOpen(true)}>+</div>
+          </div>
+      </>
         )}
         <p>Усього: {totalExpense}</p>
-        <button onClick={sortExpenses}>Сортувати</button>
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}>
-          {categories.map(ctg => (
-            <option key={ctg}>{ctg}</option>
-          ))}
-        </select>
-        <Form
-          expenses={expenses}
-          setExpenses={setExpenses}
-          categories={categories}/>
+        {open && (
+          <>
+            <Form
+              expenses={expenses}
+              setExpenses={setExpenses}
+              categories={categories}
+              onClose={setOpen}
+            />
+          </>
+        )}
       </div>
     </>
   );
