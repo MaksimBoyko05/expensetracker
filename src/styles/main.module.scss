@@ -1,14 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-@mixin expensecard {
-  width: 200px;
+$color-background: #FAFAFA;
+$color-border: #a1a0a0;
+$color-border-light: rgba(190, 190, 190, 0.24);
+$color-text-secondary: #6b6b6b;
+$color-success: #30be30;
+$color-delete-bg: #d5d5d5;
+$color-add-bg: #eeeded;
+
+$shadow-card: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+$border-radius-card: 16px;
+$border-radius-button: 6px;
+$border-radius-badge: 12px;
+
+$transition-default: all 0.3s ease;
+$transition-opacity: opacity 0.5s;
+
+@mixin card-base {
+  flex-grow: 1;
+  flex-basis: 200px;
+  max-width: 250px;
   height: 85px;
   padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  border-radius: 16px;
+  box-shadow: $shadow-card;
+  border-radius: $border-radius-card;
   animation: fadeIn 0.3s ease-out;
-  transition: all 0.3s ease;
-  &:hover{
+  transition: $transition-default;
+
+  &:hover {
     transform: scale(1.05);
   }
 }
@@ -20,114 +40,144 @@
   flex-direction: column;
 }
 
-@mixin datagap {
+@mixin flex-between {
   display: flex;
-  gap: 30px;
+  justify-content: space-between;
+}
+
+@mixin button-reset {
+  background: none;
+  border: 1px solid $color-border;
+  height: 25px;
+  border-radius: $border-radius-button;
+  cursor: pointer;
 }
 
 .maincontainer {
-  font-family: 'Roboto', sans-serif;
   @include flex-center;
-  background-color: #FAFAFA;
+  font-family: 'Roboto', sans-serif;
+  background-color: $color-background;
   width: 100%;
   height: 100vh;
+}
 
-  .sortcontainer {
-    display: flex;
-    width: 700px;
-    justify-content: space-between;
-    margin-right: 100px;
+.sortcontainer {
+  @include flex-between;
+  width: clamp(200px, 100vw, 680px);
 
-    button {
-      background: none;
-      border: 1px solid #a1a0a0;
-      height: 25px;
-      border-radius: 6px;
-    }
-
-    select {
-      background: none;
-      border: 1px solid #a1a0a0;
-      height: 25px;
-      border-radius: 6px;
-      margin-left: auto;
-    }
+  button {
+    @include button-reset;
   }
 
-  .cardscontainer {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 20px;
-    max-width: 800px;
-    flex-wrap: wrap;
-
-    .expensecard {
-      @include expensecard;
-      display: flex;
-      //align-items: center;
-      gap: 40px;
-      flex-direction: column;
-      border: 1px solid rgba(190, 190, 190, 0.24);
-
-      .topinfo {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .downinfo {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .expensename {
-        display: block;
-        font-size: 0.9rem;
-        width: fit-content;
-        font-weight: 500;
-      }
-
-      .expenseprice {
-        width: fit-content;
-        display: block;
-        font-weight: 500;
-        color: #30be30;
-        margin-left: auto;
-      }
-
-      .categorybadge {
-        display: inline-block;
-        padding: 3px 6px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 500;
-      }
-
-      .expensedate {
-        color: #6b6b6b;
-        font-size: 0.85rem;
-        font-weight: 500;
-      }
-    }
-
-    .addexpense {
-      @include expensecard;
-      @include flex-center;
-      background-color: #eeeded;
-      font-weight: 400;
-      color: #6b6b6b;
-      font-size: 2rem;
-      cursor: pointer;
-    }
+  select {
+    @include button-reset;
+    margin-left: auto;
   }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+}
+
+.cardscontainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  max-width: 700px;
+  width: 100%;
+}
+
+.expensecard {
+  @include card-base;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border: 1px solid $color-border-light;
+}
+
+.topinfo {
+  @include flex-between;
+  position: relative;
+}
+
+.deletecontainer {
+  @include flex-center;
+  position: absolute;
+  width: 100%;
+  height: 9vh;
+  flex-direction: row;
+  transition: $transition-opacity;
+
+  &:hover .deletebtn {
+    display: block;
+    opacity: 1;
+  }
+}
+
+.deletebtn {
+  display: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0 5px;
+  border: 1px solid #c4c2c2;
+  border-radius: 50%;
+  background-color: $color-delete-bg;
+  color: $color-text-secondary;
+  opacity: 0;
+  cursor: pointer;
+  transition: $transition-opacity;
+}
+
+.downinfo {
+  @include flex-between;
+}
+
+.expensename {
+  display: block;
+  width: fit-content;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.expenseprice {
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  font-weight: 500;
+  color: $color-success;
+}
+
+.categorybadge {
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: $border-radius-badge;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.expensedate {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $color-text-secondary;
+}
+
+.addexpense {
+  @include card-base;
+  @include flex-center;
+  background-color: $color-add-bg;
+  font-size: 2rem;
+  font-weight: 400;
+  color: $color-text-secondary;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

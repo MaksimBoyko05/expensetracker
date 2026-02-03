@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import Form from "./AddExpenseForm";
+import BudgetBar from "./BudgetBar";
 import styles from '../styles/main.module.scss'
 
 function ExpenseTracker() {
@@ -23,7 +24,10 @@ function ExpenseTracker() {
     : expenses.filter(item => item.category === selectedCategory)
 
   const categories = ["All", ...new Set(expenses?.map(exp => (exp.category)))]
-  const totalExpense = filteredExpenses.reduce((accumulator, currentValue) => {
+  const totalExpense = expenses.reduce((accumulator, currentValue) => {
+    return accumulator + Number(currentValue.price)
+  }, 0);
+  const categoryExpense = filteredExpenses.reduce((accumulator, currentValue) => {
     return accumulator + Number(currentValue.price)
   }, 0);
 
@@ -48,10 +52,16 @@ function ExpenseTracker() {
       border: `1px solid hsl(${h}, 70%, 80%)`
     };
   }
+  const deleteExpense = (id) => {
+    setExpenses(expenses.filter(exp => exp.id !== id));
+  }
 
   return (
     <>
       <div className={styles.maincontainer}>
+        <div>
+          <BudgetBar totalExpense={totalExpense}/>
+        </div>
         {expenses.length === 0 ? (
           <p>У вас ще немає витрат</p>
         ) : (
@@ -75,6 +85,11 @@ function ExpenseTracker() {
                 <div className={styles.topinfo}>
                   <span className={styles.expensename}>{exp.name} </span>
                   <span className={styles.expenseprice}>{exp.price} ₴</span>
+                  <div className={styles.deletecontainer}>
+                    <button
+                      className={styles.deletebtn}
+                      onClick={() => deleteExpense(exp.id)}>&times;</button>
+                  </div>
                 </div>
                 <div className={styles.downinfo}>
                   <span className={styles.categorybadge} style={stringToColor(exp.category)}>{exp.category}</span>
@@ -88,6 +103,12 @@ function ExpenseTracker() {
       </>
         )}
         <p>Усього: {totalExpense}</p>
+        {filteredExpenses !== "All" && (
+          <>
+          <p>У обраній категорії: {categoryExpense}</p>
+          </>
+        )
+        }
         {open && (
           <>
             <Form
