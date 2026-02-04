@@ -112,7 +112,13 @@ $track-color: #eee;
   @media (max-width: 430px) {
     .editbtn{
       top: 20%;
-      right: 17%;
+      right: 20%;
+    }
+  }
+  @media (max-width: 344px) {
+    .editbtn{
+      top: 20%;
+      right: 14%;
     }
   }
 }

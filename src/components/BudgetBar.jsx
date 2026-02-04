@@ -46,7 +46,7 @@ function BudgetBar({totalExpense}) {
           )}
         </h4>
         <div className={styles.valuesection}>
-          <span className={styles.spanleft}>Залишилось:{budgetLeft}</span>
+          <span className={styles.spanleft}>Залишилось:{budgetLeft < 0 ? 0 : budgetLeft}</span>
           <span className={styles.spendspan}>Витрачено: {totalExpense}</span>
         </div>
         <progress
