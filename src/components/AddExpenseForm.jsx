@@ -17,7 +17,7 @@ function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
     const newExpense = {
       ...data,
       id: Date.now().toString(36),
-      date: Date(),
+      date:new Date().toLocaleDateString('uk-UA'),
       category: data.category === "custom"
         ? data.customCategory
         : data.category
@@ -27,6 +27,7 @@ function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
         ...expenses, newExpense
       ])
       setData(initialState)
+      onClose(false)
     } else {
       alert("Будь ласка, заповніть всі поля!")
     }

@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 $shadow-card: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 $border-radius-card: 16px;
 $color-border: rgba(190, 190, 190, 0.24);
-$container-width: clamp(200px, 100vw, 680px);
-$container-height: 200px;
+$container-width: clamp(200px, 90vw, 680px);
+$container-height: 130px;
 $color-text-secondary: #6b6b6b;
 $bar-green-color: #30be30;
 $track-color: #eee;
@@ -12,6 +13,7 @@ $track-color: #eee;
 .maincontainer {
   width: $container-width;
   height: $container-height;
+  position: relative;
   font-family: 'Roboto', sans-serif;
   padding: 10px;
   display: flex;
@@ -21,12 +23,68 @@ $track-color: #eee;
   box-shadow: $shadow-card;
   background-color: #ffffff;
 
+  h4 {
+    color: #6b6b6b;
+
+    span {
+      margin-left: 2px;
+      color: #1e293b;
+    }
+  }
+
+  .editbtn {
+    position: absolute;
+    display: flex;
+    align-self: end;
+    top: 20%;
+    right: 32%;
+    margin-left: auto;
+    background: none;
+    border: none;
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  .editinput {
+    width: 70px;
+    border-radius: 12px;
+    padding: 2px;
+    border: 1px solid #6b6b6b;
+  }
+
+  .savebtn {
+    margin-left: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+    }
+
+    background-color: #30be30;
+  }
+
   .valuesection {
     display: flex;
     font-size: 0.9rem;
     color: $color-text-secondary;
     font-weight: 500;
-    gap: 20px;
+    padding-bottom: 10px;
+
+    .leftspan {
+      align-self: start;
+    }
+
+    .spendspan {
+      align-self: end;
+      margin-left: auto;
+    }
   }
 
   .budgetbar {
@@ -50,5 +108,21 @@ $track-color: #eee;
     &::-moz-progress-bar {
       background-color: $bar-green-color;
     }
+  }
+  @media (max-width: 430px) {
+    .editbtn{
+      top: 20%;
+      right: 17%;
+    }
+  }
+}
+@media (min-width: 393px) {
+  .maincontainer{
+    position: sticky;
+    margin-top: 90px;
+  }
+  .editbtn{
+    top: 20%;
+    right: 17%;
   }
 }

@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import {Pencil} from 'lucide-react';
 import styles from "../styles/budgetbar.module.scss"
 
 function BudgetBar({totalExpense}) {
@@ -22,23 +23,36 @@ function BudgetBar({totalExpense}) {
   return (
     <>
       <div className={styles.maincontainer}>
-        <h4>Вказаний бюджет: {budget}</h4>
-        <div className={styles.valuesection}><span>Залишилось:{budgetLeft}</span>
-          <span>Витрачено: {totalExpense}</span></div>
+        <h4>Вказаний бюджет:
+          {open ? (
+            <>
+              <input
+                className={styles.editinput}
+                type={"number"}
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}/>
+              <button
+                className={styles.savebtn}
+                onClick={() => setOpen(false)}>Зберегти
+              </button>
+            </>
+          ) : (
+            <>
+              <span>{budget}</span>
+              <button
+                className={styles.editbtn}
+                onClick={() => setOpen(true)}><Pencil size={16}/></button>
+            </>
+          )}
+        </h4>
+        <div className={styles.valuesection}>
+          <span className={styles.spanleft}>Залишилось:{budgetLeft}</span>
+          <span className={styles.spendspan}>Витрачено: {totalExpense}</span>
+        </div>
         <progress
           className={styles.budgetbar}
           max={budget}
           value={budgetLeft}></progress>
-        <button onClick={() => setOpen(true)}>Ввести бюджет</button>
-        {open && (
-          <>
-            <input
-              type={"number"}
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}/>
-            <button onClick={() => setOpen(false)}>Зберегти</button>
-          </>
-        )}
       </div>
     </>
   );

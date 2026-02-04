@@ -63,7 +63,10 @@ function ExpenseTracker() {
           <BudgetBar totalExpense={totalExpense}/>
         </div>
         {expenses.length === 0 ? (
+          <>
           <p>У вас ще немає витрат</p>
+            <div className={styles.addexpense} onClick={()=> setOpen(true)}>+</div>
+          </>
         ) : (
           <>
             <div className={styles.sortcontainer}>
@@ -93,7 +96,7 @@ function ExpenseTracker() {
                 </div>
                 <div className={styles.downinfo}>
                   <span className={styles.categorybadge} style={stringToColor(exp.category)}>{exp.category}</span>
-                  <span className={styles.expensedate}>{"Сьогодні"}</span>
+                  <span className={styles.expensedate}>{exp.date}</span>
                 </div>
               </div>
               </>
@@ -102,7 +105,6 @@ function ExpenseTracker() {
           </div>
       </>
         )}
-        <p>Усього: {totalExpense}</p>
         {filteredExpenses !== "All" && (
           <>
           <p>У обраній категорії: {categoryExpense}</p>
