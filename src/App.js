@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import ExpenseTracker from "./components/ExpenseTracker";
 function App() {

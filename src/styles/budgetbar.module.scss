@@ -121,6 +121,12 @@ $track-color: #eee;
       right: 14%;
     }
   }
+  @media (max-width: 360px) {
+    .editbtn{
+      top: 20%;
+      right: 14%;
+    }
+  }
 }
 @media (min-width: 393px) {
   .maincontainer{
