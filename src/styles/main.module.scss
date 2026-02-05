@@ -213,6 +213,7 @@ $transition-opacity: opacity 0.5s;
   max-width: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   border-radius: $border-radius-badge;
   font-size: 0.85rem;
   font-weight: 500;
