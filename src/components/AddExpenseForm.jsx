@@ -1,4 +1,5 @@
 import {useState} from "react";
+import { X } from 'lucide-react';
 import styles from '../styles/modal.module.scss'
 
 function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
@@ -41,7 +42,7 @@ function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
     <>
       <div className={styles.modalwrapper}>
         <div className={styles.modalcontent}>
-          <button onClick={handleClose} className={styles.closebtn}>x</button>
+          <button onClick={handleClose} className={styles.closebtn}> <X size={20}/></button>
         <form onSubmit={handleSubmit}>
           <div className={styles.pricesection}>
             <label>Назва витрати:</label>

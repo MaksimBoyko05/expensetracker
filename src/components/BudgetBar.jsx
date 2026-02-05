@@ -23,6 +23,7 @@ function BudgetBar({totalExpense}) {
   return (
     <>
       <div className={styles.maincontainer}>
+        <div className={styles.budgetGroup}>
         <h4>Вказаний бюджет:
           {open ? (
             <>
@@ -38,13 +39,14 @@ function BudgetBar({totalExpense}) {
             </>
           ) : (
             <>
-              <span>{budget}</span>
-              <button
-                className={styles.editbtn}
-                onClick={() => setOpen(true)}><Pencil size={16}/></button>
+                <span>{budget}</span>
+                <button className={styles.editbtn} onClick={() => setOpen(true)}>
+                  <Pencil color={"#6b6b6b"} size={16}/>
+                </button>
             </>
           )}
         </h4>
+        </div>
         <div className={styles.valuesection}>
           <span className={styles.spanleft}>Залишилось:{budgetLeft < 0 ? 0 : budgetLeft}</span>
           <span className={styles.spendspan}>Витрачено: {totalExpense}</span>

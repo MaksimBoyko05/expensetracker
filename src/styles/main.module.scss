@@ -9,12 +9,14 @@ $color-delete-bg: #d5d5d5;
 $color-add-bg: #eeeded;
 
 $shadow-card: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+$shadow-card-hover: rgba(0, 0, 0, 0.24) 0px 8px 16px;
 
 $border-radius-card: 16px;
 $border-radius-button: 6px;
 $border-radius-badge: 12px;
 
 $transition-default: all 0.3s ease;
+$transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 $transition-opacity: opacity 0.5s;
 
 @mixin card-base {
@@ -25,10 +27,16 @@ $transition-opacity: opacity 0.5s;
   box-shadow: $shadow-card;
   border-radius: $border-radius-card;
   animation: fadeIn 0.3s ease-out;
-  transition: $transition-default;
+  transition: $transition-smooth, box-shadow 0.3s ease;
+  position: relative;
 
   &:hover {
-    transform: scale(1.05);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: $shadow-card-hover;
+  }
+
+  &:active {
+    transform: translateY(-4px) scale(1.01);
   }
 }
 
@@ -67,9 +75,11 @@ $transition-opacity: opacity 0.5s;
 
   button {
     @include button-reset;
-    transition: background-color 0.3s ease;
-    &:hover{
-      background-color: #d9d9d9;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #eaeaea;
+      transform: translateY(-2px);
     }
   }
 
@@ -98,11 +108,32 @@ $transition-opacity: opacity 0.5s;
   flex-direction: column;
   gap: 40px;
   border: 1px solid $color-border-light;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+
+  &:hover {
+    border-color: rgba(190, 190, 190, 0.5);
+  }
 }
 
 .topinfo {
   @include flex-between;
   position: relative;
+  transition: transform 0.3s ease;
 }
 
 .deletecontainer {
@@ -111,30 +142,44 @@ $transition-opacity: opacity 0.5s;
   width: 100%;
   height: 9vh;
   flex-direction: row;
-  transition: $transition-opacity;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 
-  &:hover .deletebtn {
-    display: block;
+  .expensecard:hover & {
     opacity: 1;
   }
 }
 
 .deletebtn {
-  display: none;
   font-size: 1.5rem;
+  margin-bottom: 10px;
   line-height: 1;
   padding: 0 5px;
   border: 1px solid #c4c2c2;
   border-radius: 50%;
   background-color: $color-delete-bg;
   color: $color-text-secondary;
-  opacity: 0;
   cursor: pointer;
-  transition: $transition-opacity;
+  transition: all 0.3s ease;
+  transform: scale(0);
+
+  .expensecard:hover & {
+    transform: scale(1);
+  }
+
+  &:hover {
+    background-color: #c4c2c2;
+    transform: scale(1.15);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .downinfo {
   @include flex-between;
+  transition: transform 0.3s ease;
 }
 
 .expensename {
@@ -142,6 +187,11 @@ $transition-opacity: opacity 0.5s;
   width: fit-content;
   font-size: 0.9rem;
   font-weight: 500;
+  transition: color 0.3s ease;
+
+  .expensecard:hover & {
+    color: #000000;
+  }
 }
 
 .expenseprice {
@@ -150,20 +200,35 @@ $transition-opacity: opacity 0.5s;
   margin-left: auto;
   font-weight: 500;
   color: $color-success;
+  transition: transform 0.3s ease;
+
+  .expensecard:hover & {
+    transform: scale(1.05);
+  }
 }
 
 .categorybadge {
   display: inline-block;
   padding: 3px 6px;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-radius: $border-radius-badge;
   font-size: 0.85rem;
   font-weight: 500;
+  transition: all 0.3s ease;
+
+  .expensecard:hover & {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .expensedate {
   font-size: 0.85rem;
   font-weight: 500;
   color: $color-text-secondary;
+  transition: color 0.3s ease;
 }
 
 .addexpense {
@@ -175,6 +240,11 @@ $transition-opacity: opacity 0.5s;
   color: $color-text-secondary;
   cursor: pointer;
   max-width: 700px;
+
+  &:hover {
+    background-color: darken($color-add-bg, 3%);
+    color: darken($color-text-secondary, 15%);
+  }
 }
 
 @keyframes fadeIn {

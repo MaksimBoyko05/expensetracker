@@ -107,7 +107,7 @@ function ExpenseTracker() {
         )}
         {filteredExpenses !== "All" && (
           <>
-          <p>У обраній категорії: {categoryExpense}</p>
+          <p>У обраній категорії: {categoryExpense}₴</p>
           </>
         )
         }
