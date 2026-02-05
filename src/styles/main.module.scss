@@ -61,8 +61,13 @@ $transition-opacity: opacity 0.5s;
 }
 
 .maincontainer {
-  @include flex-center;
+  display: flex;
+  align-items: center;
+  flex-direction:  column;
+  justify-content: flex-start;
+  padding-top: 40px;
   font-family: 'Roboto', sans-serif;
+  position: relative;
   background-color: $color-background;
   width: 100%;
   height: 100vh;
@@ -212,8 +217,8 @@ $transition-opacity: opacity 0.5s;
   padding: 3px 6px;
   max-width: 90px;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
   border-radius: $border-radius-badge;
   font-size: 0.85rem;
   font-weight: 500;
@@ -247,7 +252,16 @@ $transition-opacity: opacity 0.5s;
     color: darken($color-text-secondary, 15%);
   }
 }
+.categoryspends{
+  padding-bottom: 10px;
+}
 
+@media (min-width: 1536px) {
+  .maincontainer{
+    padding-top: 150px;
+  }
+
+}
 @keyframes fadeIn {
   from {
     opacity: 0;

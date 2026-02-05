@@ -14,7 +14,9 @@ $shadow-card-hover: rgba(0, 0, 0, 0.24) 0px 8px 16px;
 .maincontainer {
   width: $container-width;
   height: $container-height;
-  position: relative;
+  position: sticky;
+  top: 20px;
+  z-index: 100;
   font-family: 'Roboto', sans-serif;
   padding: 10px;
   display: flex;
