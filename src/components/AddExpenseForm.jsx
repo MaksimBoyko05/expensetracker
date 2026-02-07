@@ -20,8 +20,8 @@ function AddExpenseForm({expenses, setExpenses, categories, onClose}) {
       id: Date.now().toString(36),
       date:new Date().toLocaleDateString('uk-UA'),
       category: data.category === "custom"
-        ? data.customCategory
-        : data.category
+        ? data.customCategory.trim()
+        : data.category.trim()
     }
     if (data.name && data.price && newExpense.category) {
       setExpenses([
